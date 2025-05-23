@@ -2,7 +2,7 @@ name: "Deploy webpage"
 on:
   push: # Only execute pipeline when someone pushes a commmit to these branches
     branches:
-      - master
+      - main
 
 
 jobs:
