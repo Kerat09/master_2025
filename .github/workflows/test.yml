@@ -1,0 +1,35 @@
+name: "Lint Python Code"
+on:
+  push: #only execute on push to master
+    branches:
+      - main
+    
+  pull_request:
+    branches:
+      - main
+    
+
+jobs:
+  lint: # name of the job
+    runs-on: ${ { matrix.os } }
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.8, 3.9, 3.10, 3.13]
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${ { matrix.python-version } }
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${ { matrix.python-version } }
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install ruff
+          
+      - name: Lint the project
+        run: ruff check --output-format=github
